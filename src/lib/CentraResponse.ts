@@ -24,11 +24,11 @@ export class CentraResponse {
 		this.body = Buffer.concat([this.body, chunk]);
 	}
 
-	public json(): unknown {
+	public get json(): unknown {
 		return this.statusCode === 204 ? null : JSON.parse(this.body.toString());
 	}
 
-	public text(): string {
+	public get text(): string {
 		return this.body.toString();
 	}
 
