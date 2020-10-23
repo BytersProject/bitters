@@ -90,24 +90,33 @@ export class BittersRequest {
 		return this;
 	}
 
+	public stream(status: boolean) {
+		this.streamEnabled = status;
+		return this;
+	}
+
+	public compress(status: boolean) {
+		this.compressionEnabled = status;
+
+		if (!Reflect.has(this.reqHeaders, 'Content-Length') && status) this.reqHeaders['Accept-Encoding'] = BittersRequest.supportedCompressions.join(', ');
+
+		return this;
+	}
+
 	public async res() {
-		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response;
+		return this.response ??= await this.send() as BittersResponse;
 	}
 
 	public async json() {
-		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response.json;
+		return (this.response ??= await this.send() as BittersResponse).json;
 	}
 
 	public async raw() {
-		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response.body;
+		return (this.response ??= await this.send() as BittersResponse).body;
 	}
 
 	public async text() {
-		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response.text;
+		return (this.response ??= await this.send() as BittersResponse).text;
 	}
 
 	public send() {
@@ -177,5 +186,7 @@ export class BittersRequest {
 			req.end();
 		});
 	}
+
+	public static supportedCompressions: ReadonlyArray<string> = ['gzip', 'deflate'];
 
 }
