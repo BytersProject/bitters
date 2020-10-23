@@ -68,14 +68,14 @@ export class CentraRequest {
 	public header(name: string | Record<string, string> | Array<string[]>, value?: string) {
 		if (Array.isArray(name)) {
 			for (const [k, v] of name) {
-				this.reqHeaders[k.toLowerCase()] = v;
+				this.reqHeaders[k] = v;
 			}
 		} else if (name && name.constructor === Object) {
 			for (const [k, v] of Object.entries(name)) {
-				this.reqHeaders[k.toLowerCase()] = v;
+				this.reqHeaders[k] = v;
 			}
 		} else {
-			this.reqHeaders[(name as string).toLowerCase()] = value;
+			this.reqHeaders[name as string] = value;
 		}
 		return this;
 	}
@@ -113,12 +113,12 @@ export class CentraRequest {
 	public send() {
 		return new Promise((resolve, reject) => {
 			if (this.data) {
-				if (!Reflect.has(this.reqHeaders, 'content-type')) {
-					if (this.sendDataAs === 'json') this.reqHeaders['content-type'] = 'application/json';
-					else if (this.sendDataAs === 'form') this.reqHeaders['content-type'] = 'application/x-www-form-urlencoded';
+				if (!Reflect.has(this.reqHeaders, 'Content-Type')) {
+					if (this.sendDataAs === 'json') this.reqHeaders['Content-Type'] = 'application/json';
+					else if (this.sendDataAs === 'form') this.reqHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
 				}
 
-				if (!Reflect.has(this.reqHeaders, 'content-length')) this.reqHeaders['content-length'] = Buffer.byteLength(this.data).toString();
+				if (!Reflect.has(this.reqHeaders, 'Content-Length')) this.reqHeaders['Content-Length'] = Buffer.byteLength(this.data).toString();
 			}
 
 			const options: RequestOptions = {
@@ -137,8 +137,8 @@ export class CentraRequest {
 				let stream = res;
 
 				if (this.compressionEnabled) {
-					if ((res as IncomingMessage).headers['content-encoding'] === 'gzip') stream = res.pipe(zlib.createGunzip());
-					else if ((res as IncomingMessage).headers['content-encoding'] === 'deflate') stream = res.pipe(zlib.createInflate());
+					if ((res as IncomingMessage).headers['Content-Encoding'] === 'gzip') stream = res.pipe(zlib.createGunzip());
+					else if ((res as IncomingMessage).headers['Content-Encoding'] === 'deflate') stream = res.pipe(zlib.createInflate());
 				}
 
 				if (this.streamEnabled) {
