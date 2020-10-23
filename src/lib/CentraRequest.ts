@@ -6,6 +6,7 @@ import * as stream from 'stream';
 import { URL } from 'url';
 import zlib from 'zlib';
 import { CentraResponse } from './CentraResponse';
+import { DataForm } from './Enums';
 
 
 export class CentraRequest {
@@ -13,8 +14,7 @@ export class CentraRequest {
 	public url: URL;
 	public httpMethod: string;
 	public data: string | Buffer | null;
-	// TODO: use const enum for sendDataAs
-	public sendDataAs: 'form' | 'json' | 'buffer' | null;
+	public sendDataAs: DataForm | null;
 	public reqHeaders: { [k: string]: string };
 	public streamEnabled: boolean;
 	public compressionEnabled: boolean;
@@ -48,11 +48,19 @@ export class CentraRequest {
 		return this;
 	}
 
-	// TODO: use const enum for sendAs
-	public body(data: any, sendAs?: 'json' | 'buffer' | 'form') {
+	public body(data: any, sendAs?: DataForm) {
 		this.sendDataAs
-			= (typeof data === 'object' && !sendAs && !Buffer.isBuffer(data) ? 'json' : sendAs ? sendAs.toLowerCase() : 'buffer') as 'json' | 'buffer' | 'form';
-		this.data = this.sendDataAs === 'form' ? qs.stringify(data) : this.sendDataAs === 'json' ? JSON.stringify(data) : data;
+			= (typeof data === 'object' && !sendAs && !Buffer.isBuffer(data)
+				? DataForm.JSON
+				: sendAs
+					? sendAs.toLowerCase()
+					: DataForm.Buffer) as DataForm;
+		this.data
+			= this.sendDataAs === DataForm.Form
+				? qs.stringify(data)
+				: this.sendDataAs === DataForm.JSON
+					? JSON.stringify(data)
+					: data;
 		return this;
 	}
 
