@@ -1,6 +1,23 @@
+/**
+ * Specifies in which format the body should be sent.
+ * @since 1.0.0
+ */
 export const enum DataForm {
+	/**
+	 * Sends the body as a form.
+	 * @since 1.0.0
+	 */
 	Form = 'form',
+
+	/**
+	 * Sends the body as a JSON string.
+	 * @since 1.0.0
+	 */
 	JSON = 'json',
+	/**
+	 * Sends the body as a raw Buffer.
+	 * @since 1.0.0
+	 */
 	Buffer = 'buffer'
 }
 
