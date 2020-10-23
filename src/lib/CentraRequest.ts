@@ -31,13 +31,17 @@ export class CentraRequest {
 		this.coreOptions = {};
 	}
 
-	public query(a1: string | Record<string, any>, a2?: any) {
-		if (typeof a1 === 'object') {
-			Object.keys(a1).forEach(queryKey => {
-				this.url.searchParams.append(queryKey, a1[queryKey]);
-			});
+	public query(name: string | Record<string, string> | Array<string[]>, value?: string) {
+		if (Array.isArray(name)) {
+			for (const [k, v] of name) {
+				this.url.searchParams.set(k, v);
+			}
+		} else if (name && name.constructor === Object) {
+			for (const [k, v] of Object.entries(name)) {
+				this.url.searchParams.set(k, v);
+			}
 		} else {
-			this.url.searchParams.append(a1, a2);
+			this.url.searchParams.set(name as string, value!);
 		}
 		return this;
 	}
