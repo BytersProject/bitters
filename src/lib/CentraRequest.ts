@@ -12,22 +12,16 @@ export class CentraRequest {
 
 	public url: URL;
 	public httpMethod: HttpMethods;
-	public data: string | Buffer | null;
-	public sendDataAs: DataForm | null;
-	public reqHeaders: Record<string, string>;
-	public streamEnabled: boolean;
-	public compressionEnabled: boolean;
-	public coreOptions: RequestOptions;
+	public data: string | Buffer | null = null;
+	public sendDataAs: DataForm | null = null;
+	public reqHeaders: Record<string, string> = {};
+	public streamEnabled = false;
+	public compressionEnabled = false;
+	public coreOptions: RequestOptions = {};
 
-	public constructor(url: string, method: HttpMethods | undefined = HttpMethods.GET) {
+	public constructor(url: string | URL, method: HttpMethods | undefined = HttpMethods.GET) {
 		this.url = typeof url === 'string' ? new URL(url) : url;
 		this.httpMethod = method;
-		this.data = null;
-		this.sendDataAs = null;
-		this.reqHeaders = {};
-		this.streamEnabled = false;
-		this.compressionEnabled = false;
-		this.coreOptions = {};
 	}
 
 	public query(name: string | Record<string, string> | Array<string[]>, value?: string) {
@@ -143,7 +137,7 @@ export class CentraRequest {
 				if (this.streamEnabled) {
 					resolve(stream);
 				} else {
-					centraRes = new CentraResponse(res as IncomingMessage, this.coreOptions);
+					centraRes = new CentraResponse(res as IncomingMessage, options);
 
 					stream.on('error', err => {
 						reject(err);
