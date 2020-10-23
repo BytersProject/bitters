@@ -3,6 +3,8 @@
 	"description": " ",
 	"version": "1.0.0",
 	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"private": false,
 	"author": {
 		"email": "yo@quantumlytangled.com",
 		"name": "QuantumlyTangled",
@@ -66,5 +68,12 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
+	},
+	"files": [
+		"dist",
+		"!dist/.tsbuildinfo"
+	],
+	"publishConfig": {
+		"access": "public"
 	}
 }
