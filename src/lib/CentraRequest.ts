@@ -15,7 +15,7 @@ export class CentraRequest {
 	public httpMethod: string;
 	public data: string | Buffer | null;
 	public sendDataAs: DataForm | null;
-	public reqHeaders: { [k: string]: string };
+	public reqHeaders: Record<string, string>;
 	public streamEnabled: boolean;
 	public compressionEnabled: boolean;
 	public coreOptions: RequestOptions;
