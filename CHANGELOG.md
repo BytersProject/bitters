@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/BytersProject/centra/compare/v1.0.0...v1.0.1) (2020-10-23)
+
+
+### Bug Fixes
+
+* missmatched properties ([65f1a00](https://github.com/BytersProject/centra/commit/65f1a0046355c41d41f13f4fec7448c7d318d922))
+
 ## 1.0.0 (2020-10-23)
 
 
