@@ -65,14 +65,14 @@ export class CentraRequest {
 	public header(name: string | Record<string, string> | Array<string[]>, value?: string) {
 		if (Array.isArray(name)) {
 			for (const [k, v] of name) {
-				this.reqHeaders[k] = v;
+				this.reqHeaders[k.toLowerCase()] = v;
 			}
 		} else if (name && name.constructor === Object) {
 			for (const [k, v] of Object.entries(name)) {
-				this.reqHeaders[k] = v;
+				this.reqHeaders[k.toLowerCase()] = v;
 			}
 		} else {
-			this.reqHeaders[name as string] = value;
+			this.reqHeaders[(name as string).toLowerCase()] = value;
 		}
 		return this;
 	}
@@ -131,16 +131,13 @@ export class CentraRequest {
 
 				if (this.compressionEnabled) {
 					if ((res as IncomingMessage).headers['content-encoding'] === 'gzip') stream = res.pipe(zlib.createGunzip());
-
 					else if ((res as IncomingMessage).headers['content-encoding'] === 'deflate') stream = res.pipe(zlib.createInflate());
 				}
-
-				let centraRes: CentraResponse | undefined = undefined;
 
 				if (this.streamEnabled) {
 					resolve(stream);
 				} else {
-					centraRes = new CentraResponse(res as IncomingMessage, options);
+					const centraRes = new CentraResponse(res as IncomingMessage, options);
 
 					stream.on('error', err => {
 						reject(err);
