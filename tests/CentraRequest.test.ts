@@ -1,12 +1,30 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { CentraRequest } from '../src';
+import { URL as NURL } from 'url';
 
 describe('CentraRequest', () => {
 	describe('JSON', () => {
-		test('GET JSON data FROM https://jsonplaceholder.typicode.com/posts/1', async () => {
+		test('GET JSON data FROM https://jsonplaceholder.typicode.com/posts/1 STRING', async () => {
 			expect.assertions(1);
 
 			const URL = 'https://jsonplaceholder.typicode.com/posts/1';
+			const RESPONSE = {
+				userId: 1,
+				id: 1,
+				title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
+				body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
+			};
+
+			const request = new CentraRequest(URL);
+			const response = await request.json();
+
+			expect(response).toEqual(RESPONSE);
+		});
+
+		test('GET JSON data FROM https://jsonplaceholder.typicode.com/posts/1 URL', async () => {
+			expect.assertions(1);
+
+			const URL = new NURL('https://jsonplaceholder.typicode.com/posts/1');
 			const RESPONSE = {
 				userId: 1,
 				id: 1,
