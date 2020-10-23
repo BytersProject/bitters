@@ -39,7 +39,6 @@ export class CentraRequest {
 		} else {
 			this.url.searchParams.append(a1, a2);
 		}
-
 		return this;
 	}
 

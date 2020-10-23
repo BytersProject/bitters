@@ -1,13 +1,12 @@
-import { RequestOptions, IncomingMessage } from 'http';
+import { IncomingHttpHeaders, IncomingMessage, RequestOptions } from 'http';
 
 export class CentraResponse {
 
 	public coreRes: IncomingMessage;
 	public resOptions: RequestOptions;
 	public body: Buffer;
-	public headers: IncomingMessage['headers'];
+	public headers: IncomingHttpHeaders;
 	public statusCode: IncomingMessage['statusCode'];
-
 
 	public constructor(res: IncomingMessage, resOptions: RequestOptions) {
 		this.coreRes = res;
@@ -25,7 +24,7 @@ export class CentraResponse {
 	}
 
 	public get json(): unknown {
-		return this.statusCode === 204 ? null : JSON.parse(this.body.toString());
+		return this.statusCode === 204 ? null : CentraResponse.parse(this.body.toString());
 	}
 
 	public get text(): string {
