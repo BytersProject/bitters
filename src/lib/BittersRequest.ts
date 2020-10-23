@@ -102,12 +102,12 @@ export class BittersRequest {
 
 	public async raw() {
 		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response.json;
+		return this.response.body;
 	}
 
 	public async text() {
 		if (this.response === undefined) this.response = await this.send() as BittersResponse;
-		return this.response.json;
+		return this.response.text;
 	}
 
 	public send() {
