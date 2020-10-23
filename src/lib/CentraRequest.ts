@@ -112,13 +112,12 @@ export class CentraRequest {
 	public send() {
 		return new Promise((resolve, reject) => {
 			if (this.data) {
-				if (!this.reqHeaders.hasOwnProperty('content-type')) {
+				if (!Reflect.has(this.reqHeaders, 'content-type')) {
 					if (this.sendDataAs === 'json') this.reqHeaders['content-type'] = 'application/json';
-
 					else if (this.sendDataAs === 'form') this.reqHeaders['content-type'] = 'application/x-www-form-urlencoded';
 				}
 
-				if (!this.reqHeaders.hasOwnProperty('content-length')) this.reqHeaders['content-length'] = Buffer.byteLength(this.data).toString();
+				if (!Reflect.has(this.reqHeaders, 'content-length')) this.reqHeaders['content-length'] = Buffer.byteLength(this.data).toString();
 			}
 
 			const options: RequestOptions = {
