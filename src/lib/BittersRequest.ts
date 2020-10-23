@@ -5,10 +5,10 @@ import qs from 'querystring';
 import * as stream from 'stream';
 import { URL } from 'url';
 import zlib from 'zlib';
-import { CentraResponse } from './CentraResponse';
+import { BittersResponse } from './BittersResponse';
 import { DataForm, HttpMethods } from './Enums';
 
-export class CentraRequest {
+export class BittersRequest {
 
 	public url: URL;
 	public httpMethod: HttpMethods;
@@ -19,7 +19,7 @@ export class CentraRequest {
 	public compressionEnabled = false;
 	public coreOptions: RequestOptions = {};
 
-	protected response?: CentraResponse;
+	protected response?: BittersResponse;
 
 	public constructor(url: string | URL, method?: HttpMethods, coreOptions?: RequestOptions) {
 		this.url = typeof url === 'string' ? new URL(url) : url;
@@ -91,22 +91,22 @@ export class CentraRequest {
 	}
 
 	public async res() {
-		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		if (this.response === undefined) this.response = await this.send() as BittersResponse;
 		return this.response;
 	}
 
 	public async json() {
-		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		if (this.response === undefined) this.response = await this.send() as BittersResponse;
 		return this.response.json;
 	}
 
 	public async raw() {
-		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		if (this.response === undefined) this.response = await this.send() as BittersResponse;
 		return this.response.json;
 	}
 
 	public async text() {
-		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		if (this.response === undefined) this.response = await this.send() as BittersResponse;
 		return this.response.json;
 	}
 
@@ -144,18 +144,18 @@ export class CentraRequest {
 				if (this.streamEnabled) {
 					resolve(stream);
 				} else {
-					const centraRes = new CentraResponse(res as IncomingMessage, options);
+					const bittersRes = new BittersResponse(res as IncomingMessage, options);
 
 					stream.on('error', err => {
 						reject(err);
 					});
 
 					stream.on('data', chunk => {
-						centraRes!._addChunk(chunk);
+						bittersRes!._addChunk(chunk);
 					});
 
 					stream.on('end', () => {
-						resolve(centraRes);
+						resolve(bittersRes);
 					});
 				}
 			};

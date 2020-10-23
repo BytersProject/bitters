@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders, IncomingMessage, RequestOptions } from 'http';
 
-export class CentraResponse {
+export class BittersResponse {
 
 	public coreRes: IncomingMessage;
 	public resOptions: RequestOptions;
@@ -24,7 +24,7 @@ export class CentraResponse {
 	}
 
 	public get json(): unknown {
-		return this.statusCode === 204 ? null : CentraResponse.parse(this.body.toString());
+		return this.statusCode === 204 ? null : BittersResponse.parse(this.body.toString());
 	}
 
 	public get text(): string {

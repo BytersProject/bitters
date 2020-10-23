@@ -1,3 +1,3 @@
-export * from './lib/CentraRequest';
-export * from './lib/CentraResponse';
+export * from './lib/BittersRequest';
+export * from './lib/BittersResponse';
 export * from './lib/Enums';

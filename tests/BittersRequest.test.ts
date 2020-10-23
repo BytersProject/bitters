@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { CentraRequest } from '../src';
+import { BittersRequest } from '../src';
 import { URL as NURL } from 'url';
 
-describe('CentraRequest', () => {
+describe('BittersRequest', () => {
 	describe('JSON', () => {
 		test('GET JSON data FROM https://jsonplaceholder.typicode.com/posts/1 STRING', async () => {
 			expect.assertions(1);
@@ -15,7 +15,7 @@ describe('CentraRequest', () => {
 				body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
 			};
 
-			const request = new CentraRequest(URL);
+			const request = new BittersRequest(URL);
 			const response = await request.json();
 
 			expect(response).toEqual(RESPONSE);
@@ -32,7 +32,7 @@ describe('CentraRequest', () => {
 				body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
 			};
 
-			const request = new CentraRequest(URL);
+			const request = new BittersRequest(URL);
 			const response = await request.json();
 
 			expect(response).toEqual(RESPONSE);
@@ -51,7 +51,7 @@ describe('CentraRequest', () => {
 
 			const URL = 'https://postman-echo.com/get';
 
-			const request = new CentraRequest(URL);
+			const request = new BittersRequest(URL);
 			const response = await request
 				.query('test', 'test1')
 				.query('test1', 'test')
@@ -65,7 +65,7 @@ describe('CentraRequest', () => {
 
 			const URL = 'https://postman-echo.com/get';
 
-			const request = new CentraRequest(URL);
+			const request = new BittersRequest(URL);
 			const response = await request
 				.query(OQS)
 				.json() as { args: Record<string, string> };
@@ -78,7 +78,7 @@ describe('CentraRequest', () => {
 
 			const URL = 'https://postman-echo.com/get';
 
-			const request = new CentraRequest(URL);
+			const request = new BittersRequest(URL);
 			const response = await request
 				.query(QS)
 				.json() as { args: Record<string, string> };
