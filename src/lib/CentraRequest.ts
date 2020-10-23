@@ -1,4 +1,4 @@
-import { ClientRequest, IncomingMessage, request as httpRequest, RequestOptions } from 'http';
+import { ClientRequest, IncomingMessage, OutgoingHttpHeaders, request as httpRequest, RequestOptions } from 'http';
 import { request as httpsRequest } from 'https';
 import path from 'path';
 import qs from 'querystring';
@@ -14,7 +14,7 @@ export class CentraRequest {
 	public httpMethod: HttpMethods;
 	public data: string | Buffer | null = null;
 	public sendDataAs: DataForm | null = null;
-	public reqHeaders: Record<string, string> = {};
+	public reqHeaders: OutgoingHttpHeaders = {};
 	public streamEnabled = false;
 	public compressionEnabled = false;
 	public coreOptions: RequestOptions = {};
@@ -62,15 +62,18 @@ export class CentraRequest {
 		return this;
 	}
 
-	public header(a1: string | Record<string, string>, a2?: string) {
-		if (typeof a1 === 'object') {
-			Object.keys(a1).forEach(headerName => {
-				this.reqHeaders[headerName.toLowerCase()] = a1[headerName];
-			});
+	public header(name: string | Record<string, string> | Array<string[]>, value?: string) {
+		if (Array.isArray(name)) {
+			for (const [k, v] of name) {
+				this.reqHeaders[k] = v;
+			}
+		} else if (name && name.constructor === Object) {
+			for (const [k, v] of Object.entries(name)) {
+				this.reqHeaders[k] = v;
+			}
 		} else {
-			this.reqHeaders[a1.toLowerCase()] = a2!;
+			this.reqHeaders[name as string] = value;
 		}
-
 		return this;
 	}
 
@@ -111,7 +114,7 @@ export class CentraRequest {
 				if (!this.reqHeaders.hasOwnProperty('content-length')) this.reqHeaders['content-length'] = Buffer.byteLength(this.data).toString();
 			}
 
-			const options = {
+			const options: RequestOptions = {
 				protocol: this.url.protocol,
 				host: this.url.hostname,
 				port: this.url.port,
@@ -153,9 +156,13 @@ export class CentraRequest {
 				}
 			};
 
-			if (this.url.protocol === 'http:') req = httpRequest(options, resHandler);
-			else if (this.url.protocol === 'https:') req = httpsRequest(options, resHandler);
-			else throw new Error(`Bad URL protocol: ${this.url.protocol}`);
+			if (this.url.protocol === 'http:') {
+				req = httpRequest(options, resHandler);
+			} else if (this.url.protocol === 'https:') {
+				req = httpsRequest(options, resHandler);
+			} else {
+				throw new Error(`Bad URL protocol: ${this.url.protocol}`);
+			}
 
 			req.on('error', err => {
 				reject(err);
