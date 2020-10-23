@@ -19,6 +19,8 @@ export class CentraRequest {
 	public compressionEnabled = false;
 	public coreOptions: RequestOptions = {};
 
+	protected response?: CentraResponse;
+
 	public constructor(url: string | URL, method: HttpMethods | undefined = HttpMethods.GET) {
 		this.url = typeof url === 'string' ? new URL(url) : url;
 		this.httpMethod = method;
@@ -87,19 +89,24 @@ export class CentraRequest {
 		return this;
 	}
 
+	public async res() {
+		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		return this.response;
+	}
+
 	public async json() {
-		const res = await this.send() as CentraResponse;
-		return res.json;
+		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		return this.response.json;
 	}
 
 	public async raw() {
-		const res = await this.send() as CentraResponse;
-		return res.body;
+		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		return this.response.json;
 	}
 
 	public async text() {
-		const res = await this.send() as CentraResponse;
-		return res.text;
+		if (this.response === undefined) this.response = await this.send() as CentraResponse;
+		return this.response.json;
 	}
 
 	public send() {
