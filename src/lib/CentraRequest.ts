@@ -21,9 +21,10 @@ export class CentraRequest {
 
 	protected response?: CentraResponse;
 
-	public constructor(url: string | URL, method: HttpMethods | undefined = HttpMethods.GET) {
+	public constructor(url: string | URL, method?: HttpMethods, coreOptions?: RequestOptions) {
 		this.url = typeof url === 'string' ? new URL(url) : url;
-		this.httpMethod = method;
+		this.httpMethod = method ?? HttpMethods.GET;
+		this.coreOptions = coreOptions ?? this.coreOptions;
 	}
 
 	public query(name: string | Record<string, string> | Array<string[]>, value?: string) {
