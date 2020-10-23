@@ -6,6 +6,7 @@
 	"author": "QuantumlyTangled <yo@quantumlytangled.com> (https://quantumlytangled.com)",
 	"license": "MIT",
 	"scripts": {
+		"prepublish": "yarn build",
 		"lint": "eslint src --ext ts --fix",
 		"update": "yarn upgrade-interactive --latest",
 		"build": "tsc -b src",
