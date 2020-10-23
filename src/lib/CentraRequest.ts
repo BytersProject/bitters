@@ -6,13 +6,12 @@ import * as stream from 'stream';
 import { URL } from 'url';
 import zlib from 'zlib';
 import { CentraResponse } from './CentraResponse';
-import { DataForm } from './Enums';
-
+import { DataForm, HttpMethods } from './Enums';
 
 export class CentraRequest {
 
 	public url: URL;
-	public httpMethod: string;
+	public httpMethod: HttpMethods;
 	public data: string | Buffer | null;
 	public sendDataAs: DataForm | null;
 	public reqHeaders: Record<string, string>;
@@ -20,7 +19,7 @@ export class CentraRequest {
 	public compressionEnabled: boolean;
 	public coreOptions: RequestOptions;
 
-	public constructor(url: string, method: string | undefined = 'GET') {
+	public constructor(url: string, method: HttpMethods | undefined = HttpMethods.GET) {
 		this.url = typeof url === 'string' ? new URL(url) : url;
 		this.httpMethod = method;
 		this.data = null;
@@ -58,12 +57,14 @@ export class CentraRequest {
 				: sendAs
 					? sendAs.toLowerCase()
 					: DataForm.Buffer) as DataForm;
+
 		this.data
 			= this.sendDataAs === DataForm.Form
 				? qs.stringify(data)
 				: this.sendDataAs === DataForm.JSON
 					? JSON.stringify(data)
 					: data;
+
 		return this;
 	}
 
@@ -79,7 +80,7 @@ export class CentraRequest {
 		return this;
 	}
 
-	public method(method: string) {
+	public method(method: HttpMethods) {
 		this.httpMethod = method;
 		return this;
 	}
