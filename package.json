@@ -45,7 +45,7 @@
 		"typescript": "^4.0.3"
 	},
 	"engines": {
-		"node": ">=14",
+		"node": ">=15.0.1",
 		"npm": ">=6"
 	},
 	"husky": {
